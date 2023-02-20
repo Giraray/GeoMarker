@@ -104,7 +104,7 @@ function addToList() {
     const newListingName = document.createElement('p')
     newListingName.setAttribute('style', 'margin:5px;')
     newListingName.setAttribute('class', 'listingname')
-    newListingName.innerHTML = 'Name: ' + name
+    newListingName.innerHTML = name
 
     const newListingDelete = document.createElement('button')
     newListingDelete.setAttribute('class', 'deletebtn')
@@ -207,7 +207,7 @@ function markerEvent(e) {
         popupNameInput.addEventListener('input', () => {
             targetName = popupNameInput.value
             targetMarker.options.title = targetName
-            targetListing.getElementsByClassName('listingname')[0].innerHTML = 'Name: ' + targetName
+            targetListing.getElementsByClassName('listingname')[0].innerHTML = targetName
 
             //update localStorage name data
             for (var i = 0; i < localStorage.length; i++) {
@@ -237,7 +237,7 @@ function markerEvent(e) {
             targetDesc = descInput.value
             targetMarker.options.desc = targetDesc
             if (targetDesc != '') {
-                targetListing.getElementsByClassName('listingdesc')[0].innerHTML = '"' + targetDesc + '"'
+                targetListing.getElementsByClassName('listingdesc')[0].innerHTML = targetDesc
             }
             else targetListing.getElementsByClassName('listingdesc')[0].innerHTML = ''
 
