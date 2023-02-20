@@ -128,7 +128,7 @@ function addToList() {
     newListingDesc.setAttribute('style', 'margin:5px; font-size:80%')
     newListingDesc.setAttribute('class', 'listingdesc')
     if (desc != '') {
-        newListingDesc.innerHTML = '"' + desc + '"'
+        newListingDesc.innerHTML = desc
     }
 
     const newListing = document.createElement('div')
