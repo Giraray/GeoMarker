@@ -157,8 +157,8 @@ function markerEvent(e) {
     }
 
     //next two checks if user clicked div
-    else if (!e.path[0].id && e.path[0].className != 'deletebtn') {
-        selectedListing = e.path[0].parentElement
+    else if (!e.target.id && e.target.className != 'deletebtn') {
+        selectedListing = e.target.parentElement
         targetIndex = selectedListing.id.substring('listing'.length)
 
         for (const marker of markers) {
@@ -168,8 +168,8 @@ function markerEvent(e) {
             }
         }
     }
-    else if (e.path[0].className != 'deletebtn') {
-        selectedListing = e.path[0]
+    else if (e.target.className != 'deletebtn') {
+        selectedListing = e.target
         targetIndex = selectedListing.id.substring('listing'.length)
 
         for (const marker of markers) {
