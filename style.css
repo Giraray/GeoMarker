@@ -1,0 +1,149 @@
+body {
+    background-color: #aaa;
+}
+
+#mapbody {
+    position: relative;
+    height: 75vh;
+    border: #666 2px solid;
+}
+
+#map {
+    height: 100%;
+    width: 80%;
+    float: left;
+}
+
+#menudiv {
+    background-color: #ccc;
+    height: 75vh;
+    width: 20%;
+    float: right;
+    overflow-y: scroll;
+}
+
+#menuhead {
+    margin-inline: 10px;
+    font-family: monospace;
+    border-bottom: #333 1px solid;
+}
+
+#menuheadtext {
+    margin: 5px;
+    font-size: 20pt;
+}
+
+#counter {
+    float: right;
+    margin: 5px;
+}
+
+#listdiv {
+    margin-top: 15px;
+    margin-inline: 10px;
+}
+
+.btn {
+    position: absolute;
+    background-color: #eee;
+    height: 25px;
+    border: #333 1px solid;
+    border-radius: 5px;
+    margin: 5px;
+    z-index: 100000;
+    right: 20%;
+}
+
+.btn:enabled:active {
+    transform: scale(95%);
+}
+
+.btn:enabled:hover {
+    background-color: #ddd;
+}
+
+#inputdiv {
+    display: none;
+    top: 75vh;
+    float: right;
+    width: 20%;
+}
+
+#nameinput {
+    height: 18px;
+    margin: 5px;
+}
+
+.listing {
+    font-family: monospace;
+    margin-bottom: 10px;
+    background-color: #eee;
+    min-height: fit-content;
+    max-width: 100%;
+    max-height: 100px;
+    overflow: auto;
+
+}
+
+.listing:hover {
+    background-color: #fff;
+}
+
+.optionpopup {
+    position: absolute;
+    bottom: 0;
+    right: 20%;
+    width: 40vh;
+    height: 15vh;
+    font-family: monospace;
+    background-color: white;
+    border: solid #eee 3px;
+    z-index: 1000;
+}
+
+.popupelement {
+    margin: 3px;
+}
+
+.popupid {
+    float: right;
+}
+
+.descinput {
+    position: absolute;
+    top: 50%;
+    width: calc(100% - 14px);
+    height: calc(50% - 12px);
+    left: 0px;
+}
+
+.desctext {
+    position: absolute;
+    bottom: 50%;
+    left: 0px;
+}
+
+.xbtn {
+    float: right;
+    height: 14px;
+    width: 14px;
+    border: #aaa 1px solid;
+    background-color: #fefefe;
+}
+
+.xbtn:hover {
+    background-color: #ddd;
+}
+
+.deletebtn {
+    float: right;
+    height: 15px;
+    width: 15px;
+    background-color: #c00;
+    border: #777 solid 1px;
+    margin: 5px;
+}
+
+.deletebtn:hover {
+    background-color: #f00;
+}
