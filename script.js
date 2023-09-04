@@ -27,6 +27,7 @@ let markerClicked
 let popupActive
 let optionPopupG
 
+cancelBtn = document.getElementById('cancelbtn')
 addButton = document.getElementById('addmarker')
 nameInput = document.getElementById('nameinput')
 saveButton = document.getElementById('savemarker')
@@ -35,10 +36,16 @@ listDiv = document.getElementById('listdiv')
 
 addButton.addEventListener('click', initAdd)
 
-//Check if marker creation is initialized (clicked on map after clicking "add marker")
+//initAdd() fires when "Add marker" button is pressed
+//check if marker creation is initialized (clicked on map after clicking "add marker") -> setMarker()
 function initAdd() {
     if (settingMarker == false) {
         addingMarker = true
+
+        cancelBtn.style.display = 'block'
+        cancelBtn.disabled = false
+
+        addButton.disabled = true
 
         removePopup()
     }
@@ -46,6 +53,7 @@ function initAdd() {
 
 map.on('click', setMarker)
 
+//setMarker() fires when map is clicked on after "Add marker" button is pressed
 function setMarker(e) {
     if (addingMarker == true) {
         var newMarkerL = new L.marker(e.latlng).addTo(map).on('click', markerEvent)
@@ -59,12 +67,29 @@ function setMarker(e) {
     }
 }
 
+cancelBtn.addEventListener('click', (e) => {
+    if (settingMarker == true || addingMarker == true) {
+        addingMarker = false
+        settingMarker = false
+
+        resetSaveInput()
+        addButton.disabled = false
+
+        cancelBtn.style.display = 'none'
+        cancelBtn.disabled = true
+
+        newMarkerG.remove()
+    }
+})
+
+//resets textarea HTML
 function resetSaveInput() {
     settingMarker = false
     inputDiv.style.display = 'none'
     nameInput.value = ''
 }
 
+//When save button is pressed
 saveButton.addEventListener('click', (e) => {
     if (settingMarker == true) {
         newMarkerG.options.title = nameInput.value
@@ -92,8 +117,21 @@ saveButton.addEventListener('click', (e) => {
         updateCounter()
         addToList()
         newLocalMarker(newMarkerG)
+
+        addButton.disabled = false
+        cancelBtn.style.display = 'none'
+        cancelBtn.disabled = true
     }
 })
+
+//tests JSON validity -- mainly for testing in a local environment
+function isValidJSON(str) {
+    try {
+        return !!(JSON.parse(str))
+    } catch (e) {
+        return false
+    }
+}
 
 //adds a marker listing
 function addToList() {
@@ -109,17 +147,32 @@ function addToList() {
     const newListingDelete = document.createElement('button')
     newListingDelete.setAttribute('class', 'deletebtn')
     newListingDelete.addEventListener('click', () => {
+
+        //delete marker
+        //matches listing with marker object to delete both accordingly
         var deletedMarker = markers[markers.map(object => object.options.id).indexOf(id)]
         markers.splice(markers.map(object => object.options.id).indexOf(id), 1)
         newListing.parentElement.removeChild(newListing)
 
         //remove from localStorage
         for (var i = 0; i < localStorage.length; i++) {
-            markerInfo = JSON.parse(localStorage.getItem(localStorage.key(i)))
-            if (markerInfo[6] == 'marker' && markerInfo[0] == deletedMarker.options.id) {
-                localStorage.removeItem('LOCAL_marker' + deletedMarker.options.id)
+
+            targetLocalStorageIndex = localStorage.getItem(localStorage.key(i))
+
+            //first checks if index is a valid JSON string, then checks if it belongs to this "marker" set
+            if (isValidJSON(localStorage.getItem(localStorage.key(i))) == true) {
+                markerInfo = JSON.parse(targetLocalStorageIndex)
+                if (markerInfo[6] == 'marker' && markerInfo[0] == deletedMarker.options.id) {
+                    localStorage.removeItem('LOCAL_marker' + deletedMarker.options.id)
+                }
             }
         }
+
+        //remove option popup if it belongs to the deleted marker
+        if (popupActive == true && deletedMarker.options.id == document.getElementById('popupID').innerHTML) {
+            removePopup()
+        }
+
         deletedMarker.remove()
         updateCounter()
     })
@@ -186,7 +239,13 @@ function markerEvent(e) {
         targetDesc = targetMarker.options.desc
         targetListing = document.getElementById('listing' + targetMarker.options.id)
 
-        map.setView(targetLatlng, 5)
+        //sets map view and zoom level
+        targetZoom = map._zoom
+        if (targetZoom < 5) {
+            targetZoom = 5
+        }
+        map.setView(targetLatlng, targetZoom)
+
 
         //popup
         if (popupActive == true) {
@@ -221,9 +280,10 @@ function markerEvent(e) {
             }
         })
 
-        const popupId = document.createElement('span')
+        var popupId = document.createElement('span')
         popupId.setAttribute('class', 'popupid popupelement')
         popupId.setAttribute('title', 'ID')
+        popupId.setAttribute('id', 'popupID')
         popupId.innerHTML = targetMarker.options.id
 
         const descText = document.createElement('span')
